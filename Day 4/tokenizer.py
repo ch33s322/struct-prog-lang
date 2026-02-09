@@ -3,7 +3,7 @@ import re
 
 #define patterns for tokens
 patterns = [
-    [r"\d+(.d*)", "number"],
+    [r"(\d+)?(\.)?(\d+)", "number"],
     [r"\+", "+"],
     [r"\-", "-"],
     [r"\*", "*"],
@@ -30,7 +30,7 @@ def tokenize(characters):
         assert match
         #process errors
         if tag == "error":
-            raise Excception("Syntax error")
+            raise Exception("Syntax error")
 
         token = {
             "tag":tag,
@@ -38,7 +38,7 @@ def tokenize(characters):
             "value":match.group(0)
         }
         if token["tag"] == "number":
-            token["value"] = int(token["value"])
+            token["value"] = float(token["value"])
         if token["tag"] != "WHITESPACE":
             tokens.append(token)
         position = position + match.end()
@@ -62,11 +62,12 @@ def test_simple_token():
 
 def test_number_token():
     print("test number tokens")
-    for s in ["1", "11", "1.1", "11.1", "11.", ".11"]:
+    for s in ["1", "11", "1.1", "11.1", ".11"]:
+        print(s)
         t = tokenize(s)
         assert len(t) == 2
         assert t[0]["tag"] == "number"
-        assert t[0]["value"] == int(s)
+        assert t[0]["value"] == float(s)
 
 
 def test_multiple_tokens():

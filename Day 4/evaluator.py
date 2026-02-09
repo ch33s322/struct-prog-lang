@@ -53,7 +53,7 @@ def parse(tokens):
     ast, tokens = parse_expression(tokens)
     return ast
 
-def eval("s"):
+def eval(s):
     tokens = tokenize(s)
     ast = parse(tokens)
     result = evaluate(ast)
