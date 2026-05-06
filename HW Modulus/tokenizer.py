@@ -8,9 +8,9 @@ patterns = [
     [r"\-", "-"],
     [r"\*", "*"],
     [r"\/", "/"],
+    [r"\%", "%"],
     [r"\(", "("],
     [r"\)", ")"],
-    [r"\%", "%"],
     [r"\s+", "WHITESPACE"],
     [r".", "error"],
 ]
@@ -42,7 +42,7 @@ def tokenize(characters):
             token["value"] = float(token["value"])
         if token["tag"] != "WHITESPACE":
             tokens.append(token)
-        position = position + match.end()
+        position = match.end()
 
     tokens.append({
         "tag":None,
@@ -74,14 +74,14 @@ def test_number_token():
 def test_multiple_tokens():
     print("testing multiple tokens")
     tokens = tokenize("1+2")
-    assert tokens == [{'tag': 'number', 'position': 0, 'value': 1}, {'tag': '+', 'position': 1, 'value': '+'}, {'tag': None, 'position': 3, 'value': None}]
+    assert tokens == [{'tag': 'number', 'position': 0, 'value': 1}, {'tag': '+', 'position': 1, 'value': '+'}, {'tag': 'number', 'position': 2, 'value': 2}, {'tag': None, 'position': 3, 'value': None}]
     #print(tokens)
 
 
 def test_whitespace():
     print("testing white space")
     tokens = tokenize("1 + 2")
-    assert tokens == [{'tag': 'number', 'position': 0, 'value': 1}, {'tag': None, 'position': 7, 'value': None}]
+    assert tokens == [{'tag': 'number', 'position': 0, 'value': 1.0}, {'tag': '+', 'position': 2, 'value': '+'}, {'tag': 'number', 'position': 4, 'value': 2.0}, {'tag': None, 'position': 5, 'value': None}]
     #print(tokens)
 
 def test_error():
@@ -92,10 +92,11 @@ def test_error():
     except Exception as e:
         assert "Syntax error" in str(e), f"Unexpected Exception: {e}"
 
+
 def test_modulus():
     print("testing modulus")
-    tokens = tokenize("%")
-    assert tokens == [{'tag': '%', 'position': 0, 'value': '%'}]
+    tokens = tokenize("10 % 3")
+    assert tokens == [{'tag': 'number', 'position': 0, 'value': 10.0}, {'tag': '%', 'position': 3, 'value': '%'}, {'tag': 'number', 'position': 5, 'value': 3.0}, {'tag': None, 'position': 6, 'value': None}]
 
 
 if __name__ == "__main__":

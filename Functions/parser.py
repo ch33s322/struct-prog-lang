@@ -7,7 +7,7 @@ Accept a string of tokens, return an AST expressed as stack of dictionaries
 """
 
 """
-    factor = <number> | <identifier> | "(" expression ")" | "!" expression | "-" expression 
+    factor = <number> | <identifier> | "(" expression ")" | "!" expression | "-" expression | function exprssion
     term = factor { "*"|"/" factor }
     arithmetic_expression = term { "+"|"-" term }
     relational_expression = arithmetic_expression { ("<" | ">" | "<=" | ">=" | "==" | "!=") arithmetic_expression } ;
