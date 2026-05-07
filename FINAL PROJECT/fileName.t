@@ -1,0 +1,3 @@
+include example;
+
+print x
